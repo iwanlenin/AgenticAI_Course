@@ -26,7 +26,7 @@ from agents import Agent
 # Configuration
 # ---------------------------------------------------------------------------
 # Number of distinct searches the model should propose
-HOW_MANY_SEARCHES = 5
+HOW_MANY_SEARCHES = 3
 
 # Model configuration
 llm_model_to_use = os.getenv("DEFAULT_OPENAI_MODEL")

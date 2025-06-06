@@ -22,10 +22,12 @@ asynchronously to maximize throughput.
 # ---------------------------------------------------------------------------
 import asyncio
 from agents import Runner, trace, gen_trace_id
-from search_agent import search_agent
+
+from search_agent import get_search_agent
 from planner_agent import planner_agent, WebSearchItem, WebSearchPlan
 from writer_agent import writer_agent, ReportData
 from email_agent import email_agent
+from llm_helper import LLM_MODEL_NAME
 
 
 # ---------------------------------------------------------------------------
@@ -58,7 +60,7 @@ class ResearchManager:
             print("Starting research...")
             search_plan = await self.plan_searches(query)
             yield "Searches planned, starting to search..."  
-            
+            self.search_agent = get_search_agent(LLM_MODEL_NAME.GEMINI)
             search_results = await self.perform_searches(search_plan)
             yield "Searches complete, writing report..."
             
@@ -122,7 +124,7 @@ class ResearchManager:
         input = f"Search term: {item.query}\nReason for searching: {item.reason}"
         try:
             result = await Runner.run(
-                search_agent,
+                self.search_agent,
                 input,
             )
             return str(result.final_output)
