@@ -28,16 +28,18 @@ from typing import Dict
 import sendgrid
 from sendgrid.helpers.mail import Email, Mail, Content, To
 from agents import Agent, function_tool
+from llm_model_selector import get_model
+from llm_helper import LLM_MODEL_NAME, EMAIL_ADDRESS
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 # Default sender and recipient email addresses
-from_email = os.getenv("DEFAULT_EMAIL")
-to_email = os.getenv("DEFAULT_EMAIL")
+#from_email = "j.geberlin@gmail.com" #os.getenv("DEFAULT_EMAIL")""
+#to_email = "j.geberlin@gmail.com" #os.getenv("DEFAULT_EMAIL")
 
 # Model configuration
-llm_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
+llm_to_use = get_model(LLM_MODEL_NAME.OPENAI)
 
 
 # ---------------------------------------------------------------------------
@@ -45,32 +47,15 @@ llm_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
 # ---------------------------------------------------------------------------
 @function_tool
 def send_email(subject: str, html_body: str) -> Dict[str, str]:
-    """Send an email with the given subject and HTML body.
-    
-    This function uses SendGrid's API to send HTML-formatted emails. It requires
-    proper configuration of SendGrid API key and verified sender email address.
-    
-    Args:
-        subject (str): The email subject line
-        html_body (str): The HTML-formatted content of the email
-        
-    Returns:
-        Dict[str, str]: Response status dictionary with 'success' status
-        
-    Raises:
-        sendgrid.SendGridException: If there's an error sending the email
-    """
+    """ Send an email with the given subject and HTML body """
     sg = sendgrid.SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY'))
-    from_email = Email(from_email)  # Verified sender address
-    to_email = To(to_email)         # Recipient address
+    from_email = Email("j.geberlin@gmail.com") # put your verified sender here
+    to_email = To("j.geberlin@gmail.com") # put your recipient here
     content = Content("text/html", html_body)
-    
     mail = Mail(from_email, to_email, subject, content).get()
     response = sg.client.mail.send.post(request_body=mail)
     print("Email response", response.status_code)
-    
     return {"status": "success"}
-
 
 # ---------------------------------------------------------------------------
 # Agent Configuration

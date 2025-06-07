@@ -26,7 +26,9 @@ def get_search_agent(provider: LLM_MODEL_NAME):
     :return: Agent instance configured with the chosen LLM model and web search tool.
     """
     # Get the model instance for the specified provider
-    llm_model = get_model(provider)
+    #llm_model = get_model(provider)
+    llm_model = get_model(LLM_MODEL_NAME.GEMINI)
+    print(f"llm_model: {llm_model.model}")
     # Instantiate and return the agent
     return Agent(
         name="Search agent",

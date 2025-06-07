@@ -20,13 +20,17 @@ The agent's output includes:
 import os
 from pydantic import BaseModel, Field
 from agents import Agent
+from llm_model_selector import get_model
+from llm_helper import LLM_MODEL_NAME
 
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 # The language model to use
-llm_model_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
+#llm_model_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
+llm_model_to_use = get_model(LLM_MODEL_NAME.OPENAI)
+print(f"llm_model_to_use: {llm_model_to_use}")
 
 # System prompt instructions for the language model
 INSTRUCTIONS = (
