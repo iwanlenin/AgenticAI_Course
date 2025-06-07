@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 # - Enforces enum type for clarity and safety.
 # ---------------------------------------------------------------------------
 
-def get_model(provider: LLM_MODEL_NAME = LLM_MODEL_NAME.OPENAI) -> OpenAIChatCompletionsModel:
+def get_model(provider: LLM_MODEL_NAME) -> OpenAIChatCompletionsModel:
     """
     Selects and instantiates a chat model for the given provider.
     - Reads <PROVIDER>_API_KEY and <PROVIDER>_URL from environment.
@@ -26,8 +26,8 @@ def get_model(provider: LLM_MODEL_NAME = LLM_MODEL_NAME.OPENAI) -> OpenAIChatCom
     # Fetch provider credentials and base URL.
     key = os.getenv(f"{provider.name}_API_KEY")
     url = getattr(LLM_BASE_URL, f"{provider.name}_URL", LLM_BASE_URL.OPENAI_URL).value
-    model = provider.value
-
+    model = getattr(LLM_MODEL_NAME, f"{provider.name}" , LLM_MODEL_NAME.OPENAI).value
+  
     # Fallback: If key is missing, switch to OpenAI defaults.
     if not key:
         key = os.getenv("OPENAI_API_KEY")

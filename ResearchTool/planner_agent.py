@@ -20,6 +20,8 @@ Place in the overall pipeline:
 import os
 from pydantic import BaseModel, Field
 from agents import Agent
+from llm_model_selector import get_model
+from llm_helper import LLM_MODEL_NAME
 
 
 # ---------------------------------------------------------------------------
@@ -29,7 +31,9 @@ from agents import Agent
 HOW_MANY_SEARCHES = 3
 
 # Model configuration
-llm_model_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
+#llm_model_to_use = os.getenv("DEFAULT_OPENAI_MODEL")
+llm_model_to_use = get_model(LLM_MODEL_NAME.OPENAI)
+print(f"llm_model_to_use: {llm_model_to_use}")
 
 # System prompt instructions for the language model
 INSTRUCTIONS = "You are a helpful research assistant. Given a query, come up with a set of web searches " \

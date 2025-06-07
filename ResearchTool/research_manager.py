@@ -98,6 +98,11 @@ class ResearchManager:
             list[str]: List of search result summaries
         """
         print("Searching...")
+        print(f"search_plan: {search_plan}")
+        print(f"search_agent: {self.search_agent}")
+        print(f"search_agent_model: {self.search_agent.model}")
+
+
         num_completed = 0
         tasks = [asyncio.create_task(self.search(item)) for item in search_plan.searches]
         results = []
@@ -124,7 +129,7 @@ class ResearchManager:
         input = f"Search term: {item.query}\nReason for searching: {item.reason}"
         try:
             result = await Runner.run(
-                self.search_agent,
+                get_search_agent(LLM_MODEL_NAME.GEMINI),
                 input,
             )
             return str(result.final_output)
@@ -143,6 +148,8 @@ class ResearchManager:
         """
         print("Thinking about report...")
         input = f"Original query: {query}\nSummarized search results: {search_results}"
+        print(f"writer_agent: {writer_agent}")
+        print(f"writer_agent: {writer_agent.model.model}")
         result = await Runner.run(
             writer_agent,
             input,
@@ -160,6 +167,7 @@ class ResearchManager:
             None
         """
         print("Writing email...")
+        print(f"email_agent: {email_agent.model.model}")
         result = await Runner.run(
             email_agent,
             report.markdown_report,
