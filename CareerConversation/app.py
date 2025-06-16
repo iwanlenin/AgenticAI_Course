@@ -92,10 +92,6 @@ class Me:
         self.rag_json = ex.to_json(orient="records", indent=2, force_ascii=False)
         print(self.rag_json)
 
-        
-
-
-
     def handle_tool_call(self, tool_calls):
         results = []
         for tool_call in tool_calls:
@@ -135,7 +131,8 @@ Ask the user for contact email and name stating, that the question will be answe
             else:
                 done = True
         return response.choices[0].message.content
-    
+
+
 
 if __name__ == "__main__":
     me = Me()
