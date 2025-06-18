@@ -1,0 +1,11 @@
+Python Code:
+n_terms = 10000
+result = 0.0
+
+for n in range(n_terms):
+    term = (-1)**n / (2 * n + 1)
+    result += term
+
+result *= 4
+
+Total after multiplying by 4: 3.1414926535900345
